@@ -1,4 +1,4 @@
-  import { select } from 'async';
+
 import { createSelector } from 'reselect';
 
   const selectCart = state => state.cart;
@@ -8,6 +8,11 @@ import { createSelector } from 'reselect';
       cart => cart.cartItems
   );
 
+  export const selectCartHidden = createSelector(
+    [selectCart],
+    cart => cart.hidden
+  )
+
   export const selectCartItemsCount = createSelector(
       [selectCartItems],
       cartItems =>
@@ -16,5 +21,14 @@ import { createSelector } from 'reselect';
             accumaltedQuantity + cartItem.quantity,
             0
         )
-
   );
+
+  export const selectCartTotal = createSelector(
+    [selectCartItems],
+    cartItems =>
+        cartItems.reduce(
+            (accumaltedQuantity, cartItem) =>
+            accumaltedQuantity + cartItem.quantity * cartItem.price,
+            0
+        )
+  )
